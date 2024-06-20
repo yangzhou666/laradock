@@ -1,9 +1,12 @@
-networks:
+networks: #bridge
+  #frontend 和 backend 是定义的两个网络。它们使用 ${NETWORKS_DRIVER} 作为驱动，这意味着实际的驱动类型（如 bridge、overlay、host 等）将在运行时从环境变量 NETWORKS_DRIVER 中获取
   frontend:
     driver: ${NETWORKS_DRIVER}
   backend:
     driver: ${NETWORKS_DRIVER}
-volumes:
+volumes: #local
+  # 定义了多个卷，每个卷都使用 ${VOLUMES_DRIVER} 作为驱动。与网络类似，这意味着卷的实际驱动类型将从环境变量 VOLUMES_DRIVER 中获取
+  # 这些卷可能用于存储应用程序数据、配置文件、日志文件等，并可以在多个容器之间共享
   mysql:
     driver: ${VOLUMES_DRIVER}
   percona:
@@ -58,8 +61,8 @@ services:
 ### Workspace Utilities ##################################
     workspace:
       build:
-        context: ./workspace
-        args:
+        context: ./workspace  #context: 指定构建上下文的路径。在这种情况下，它是./workspace，意味着Docker Compose将在当前目录下的workspace子目录中查找Dockerfile和相关文件
+        args:  #这是传递给Dockerfile中ARG指令的参数列表。这些参数允许你在构建镜像时传递环境特定的值或设置。
           - CHANGE_SOURCE=${CHANGE_SOURCE}
           - SHELL_OH_MY_ZSH=${SHELL_OH_MY_ZSH}
           - SHELL_OH_MY_ZSH_AUTOSUGESTIONS=${SHELL_OH_MY_ZSH_AUTOSUGESTIONS}
@@ -197,7 +200,7 @@ services:
         - "${WORKSPACE_VUE_CLI_UI_HOST_PORT}:8000"
         - "${WORKSPACE_ANGULAR_CLI_SERVE_HOST_PORT}:4200"
         - "${WORKSPACE_VITE_PORT}:5173"
-      tty: true
+      tty: true #tty: true: 为容器分配一个伪TTY，这通常用于保持容器的长时间运行，特别是在交互式shell中
       environment:
         - PHP_IDE_CONFIG=${PHP_IDE_CONFIG}
         - DOCKER_HOST=tcp://docker-in-docker:2376
@@ -205,7 +208,7 @@ services:
         - DOCKER_TLS_CERTDIR=/certs
         - DOCKER_CERT_PATH=/certs/client
         - CHOKIDAR_USEPOLLING=true
-      networks:
+      networks: #networks: - frontend - backend: 这将容器连接到名为frontend和backend的Docker网络。这允许容器与这些网络上的其他容器进行通信
         - frontend
         - backend
       links:
@@ -1160,7 +1163,7 @@ services:
       networks:
         - frontend
 
-### MailCatcher ################################################
+###   ################################################
     mailcatcher:
       build: ./mailcatcher
       ports:
