@@ -64,6 +64,21 @@
     3. redis修改密码 REDIS_PASSWORD=123456
     4. 更改php版本 PHP_VERSION=7.4
     5. 开启php需要的扩展  
+    6. # composer镜像源
+       WORKSPACE_COMPOSER_REPO_PACKAGIST=https://mirrors.aliyun.com/composer/
+    7. # nvm镜像源 WORKSPACE_NVM_NODEJS_ORG_MIRROR=https://npmmirror.com/mirrors/node
+    8. # npm镜像源  WORKSPACE_NPM_REGISTRY=https://registry.npmmirror.com
+    9. #指定容器挂载在什么目录上，如果在laravel根目录安装则是../
+       APP_CODE_PATH_HOST=../
+
+    10. # MySQL,Redis等数据持久化保存在主机的什么位置
+        DATA_PATH_HOST=~/.laradock/data
+
+    11.  给这个laralock(docker-compose)项目取个名字,这个名字将会作为未来启动的容器的命名前缀,不能与其它laradock重名.默认是`laradock`
+    COMPOSE_PROJECT_NAME=general
+
+    12. # 设置时区,会影响到所有运行的容器
+       WORKSPACE_TIMEZONE=Asia/Shanghai
 
 ## 拉取镜像包失败
     1.error pulling image configuration: download failed after attempts=6: dial tcp 199.59.149.203:443: connect: connection timed out 
