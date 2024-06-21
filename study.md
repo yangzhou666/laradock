@@ -1,6 +1,8 @@
 # laradock学习文档
     1. fork https://github.com/laradock/laradock 到自己仓库 https://github.com/yangzhou666/laradock  方便自定义配置和维护
     2. Workspace
+    3. https://gitee.com/anviod/laradock  码云上面的学习文档
+    4. "registry-mirrors": ["https://docker.mirrors.ustc.edu.cn","https://5y00bvok.mirror.aliyuncs.com"]
 
 ## 安装
     1. git clone 项目 到本地仓木
@@ -82,3 +84,14 @@
 
 ## 拉取镜像包失败
     1.error pulling image configuration: download failed after attempts=6: dial tcp 199.59.149.203:443: connect: connection timed out 
+    更改docker镜像仓库源 /etc/docker/daemon.json "registry-mirrors": ["https://docker.mirrors.ustc.edu.cn","https://5y00bvok.mirror.aliyuncs.com"]
+    2. 当执行docker-compose up -d nginx mysql php-fpm redis php-worker 的时候，报错 直接手动 docker pull 镜像
+    3. 还是不成功 更新/etc/apt/sources.list  替换为国内镜像 然后 apt-age update
+    4. PHP_FPM_INSTALL_IMAGEMAGICK=false  这个ture死活拉不下来
+    5. 虚拟机里面主要是 镜像直接 docker-compose up 拉不下来
+    6. mysql 编译报错  注释掉这个
+       #RUN if [ ${MYSQL_VERSION} > '8.4.0-0.000' ]; then \
+        #  echo 'mysql_native_password=on' >> /etc/mysql/conf.d/my.cnf \
+        #else \
+        #  echo 'default_authentication_plugin=mysql_native_password' >> /etc/mysql/conf.d/my.cnf \
+        #;fi
