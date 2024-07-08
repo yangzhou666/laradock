@@ -2172,3 +2172,17 @@ services:
       networks:
         - frontend
         - backend
+
+    ### frps 内网穿透 ###########################################
+    frps:
+      image: snowdreamtech/frps
+      container_name: frps
+      restart: always
+      network_mode: host  # 使用宿主机网络，注意这可能会带来安全风险
+      volumes:
+        - ./frp/config/frps.ini:/etc/frp/frps.ini  # 将宿主机上的配置文件挂载到容器内
+      ports:
+         - "7000:7000"  # 假设frps监听在7000端口
+         - "7500:7500"  # 控制面板
+         - "7080:7080"  # http代理
+         - "7081:7081"  # https代理
